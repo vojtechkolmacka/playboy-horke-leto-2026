@@ -32,7 +32,6 @@ export const LocationModal: React.FC<LocationModalProps> = ({
   return (
     <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-slate-900 border border-slate-700 p-5 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl relative animate-in fade-in zoom-in-95 max-h-[90vh] flex flex-col">
-        {/* Hlavička modálního okna */}
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-slate-800 rounded-xl flex items-center justify-center text-2xl border border-slate-700 shadow-inner">
@@ -51,12 +50,10 @@ export const LocationModal: React.FC<LocationModalProps> = ({
           </button>
         </div>
 
-        {/* Popis lokace */}
         <p className="text-xs text-slate-300 leading-relaxed bg-slate-950/50 p-3 rounded-xl border border-slate-800">
           {location.description}
         </p>
 
-        {/* Seznam akcí v lokaci */}
         <div className="space-y-2.5 overflow-y-auto flex-1 pr-1">
           <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Dostupné aktivity:</h4>
           {actions.map((action) => {
@@ -90,7 +87,6 @@ export const LocationModal: React.FC<LocationModalProps> = ({
                   </div>
                 </div>
 
-                {/* Štítky s náklady a odměnami */}
                 <div className="flex items-center gap-2 pt-1 border-t border-slate-900 text-[10px]">
                   {action.costMoney && (
                     <span className="flex items-center gap-0.5 text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md border border-rose-500/20">
@@ -118,7 +114,6 @@ export const LocationModal: React.FC<LocationModalProps> = ({
           })}
         </div>
 
-        {/* Tlačítko pro zavření */}
         <button
           onClick={onClose}
           className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-xs transition border border-slate-700 mt-2"
