@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { MapView } from './components/MapView';
 import { ContactsView } from './components/ContactsView';
+import { PhoneView } from './components/PhoneView';
 import { LocationData } from './data/locations';
-import { MapPin, Users, Image as ImageIcon, DollarSign, Clock } from 'lucide-react';
+import { MapPin, Users, MessageSquare, Image as ImageIcon, DollarSign, Clock } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'map' | 'contacts' | 'gallery'>('map');
+  const [activeTab, setActiveTab] = useState<'map' | 'contacts' | 'phone' | 'gallery'>('map');
   const [gameState, setGameState] = useState({
     money: 5000,
     energy: 100,
@@ -41,6 +42,7 @@ export default function App() {
       <main className="flex-1 p-4 flex flex-col items-center overflow-y-auto">
         {activeTab === 'map' && <MapView onSelectLocation={handleSelectLocation} />}
         {activeTab === 'contacts' && <ContactsView />}
+        {activeTab === 'phone' && <PhoneView />}
         {activeTab === 'gallery' && (
           <div className="text-center p-8 bg-slate-900 border border-slate-800 rounded-2xl w-full my-auto">
             <h2 className="text-xl font-bold mb-2 text-rose-400">🖼️ Knihovna obrázků</h2>
@@ -58,6 +60,10 @@ export default function App() {
         <button onClick={() => setActiveTab('contacts')} className={`flex flex-col items-center gap-1 p-2 transition ${activeTab === 'contacts' ? 'text-rose-500' : 'text-slate-400 hover:text-slate-200'}`}>
           <Users className="w-5 h-5" />
           <span className="text-[10px]">Kontakty</span>
+        </button>
+        <button onClick={() => setActiveTab('phone')} className={`flex flex-col items-center gap-1 p-2 transition ${activeTab === 'phone' ? 'text-rose-500' : 'text-slate-400 hover:text-slate-200'}`}>
+          <MessageSquare className="w-5 h-5" />
+          <span className="text-[10px]">Telefon</span>
         </button>
         <button onClick={() => setActiveTab('gallery')} className={`flex flex-col items-center gap-1 p-2 transition ${activeTab === 'gallery' ? 'text-rose-500' : 'text-slate-400 hover:text-slate-200'}`}>
           <ImageIcon className="w-5 h-5" />
