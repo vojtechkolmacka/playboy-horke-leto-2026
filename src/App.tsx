@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapView } from './components/MapView';
 import { ContactsView } from './components/ContactsView';
 import { PhoneView } from './components/PhoneView';
 import { LocationData } from './data/locations';
-import { MapPin, Users, MessageSquare, Image as ImageIcon, DollarSign, Clock } from 'lucide-react';
+import { Character } from './data/characters';
+import { ChatMessage } from './data/messages';
+import { loadGameData, saveGameData, getDefaultGameData, GameSaveData } from './utils/storage';
+import { MapPin, Users, MessageSquare, Image as ImageIcon, DollarSign, Clock, Save } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'map' | 'contacts' | 'phone' | 'gallery'>('map');
+  
   const [gameState, setGameState] = useState({
     money: 5000,
     energy: 100,
@@ -15,9 +19,65 @@ export default function App() {
     hour: 12
   });
 
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Načtení dat při startu aplikace
+  useEffect(() => {
+    loadGameData().then((saved) => {
+      if (saved) {
+        setGameState({
+          money: saved.money,
+          energy: saved.energy,
+          maxEnergy: saved.maxEnergy,
+          day: saved.day,
+          hour: saved.hour
+        });
+        setCharacters(saved.characters);
+        setMessages(saved.messages);
+      } else {
+        const defaults = getDefaultGameData();
+        setGameState({
+          money: defaults.money,
+          energy: defaults.energy,
+          maxEnergy: defaults.maxEnergy,
+          day: defaults.day,
+          hour: defaults.hour
+        });
+        setCharacters(defaults.characters);
+        setMessages(defaults.messages);
+      }
+      setIsLoaded(true);
+    });
+  }, []);
+
+  // Automatické uložení dat při každé změně
+  useEffect(() => {
+    if (!isLoaded) return;
+    const dataToSave: GameSaveData = {
+      money: gameState.money,
+      energy: gameState.energy,
+      maxEnergy: gameState.maxEnergy,
+      day: gameState.day,
+      hour: gameState.hour,
+      characters,
+      messages
+    };
+    saveGameData(dataToSave);
+  }, [gameState, characters, messages, isLoaded]);
+
   const handleSelectLocation = (loc: LocationData) => {
     alert(`Vstoupil jsi do lokace: ${loc.name}`);
   };
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center font-sans">
+        <p className="text-rose-400 animate-pulse text-sm">Načítám hru z paměti...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans max-w-md mx-auto border-x border-slate-900">
@@ -41,8 +101,8 @@ export default function App() {
       {/* Hlavní obsahová část */}
       <main className="flex-1 p-4 flex flex-col items-center overflow-y-auto">
         {activeTab === 'map' && <MapView onSelectLocation={handleSelectLocation} />}
-        {activeTab === 'contacts' && <ContactsView />}
-        {activeTab === 'phone' && <PhoneView />}
+        {activeTab === 'contacts' && <ContactsView characters={characters} />}
+        {activeTab === 'phone' && <PhoneView characters={characters} messages={messages} setMessages={setMessages} />}
         {activeTab === 'gallery' && (
           <div className="text-center p-8 bg-slate-900 border border-slate-800 rounded-2xl w-full my-auto">
             <h2 className="text-xl font-bold mb-2 text-rose-400">🖼️ Knihovna obrázků</h2>
