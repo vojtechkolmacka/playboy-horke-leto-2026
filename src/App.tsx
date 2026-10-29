@@ -26,7 +26,6 @@ export default function App() {
   const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Načtení dat při startu aplikace
   useEffect(() => {
     loadGameData().then((saved) => {
       if (saved) {
@@ -55,7 +54,6 @@ export default function App() {
     });
   }, []);
 
-  // Automatické uložení dat při každé změně
   useEffect(() => {
     if (!isLoaded) return;
     const dataToSave: GameSaveData = {
@@ -100,7 +98,6 @@ export default function App() {
       };
     });
 
-    // Pokud akce cílí na postavu, můžeme zvýšit sympatie a poslat zprávu
     if (action.targetCharacterId) {
       setCharacters(prevChars =>
         prevChars.map(char => {
@@ -130,7 +127,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans max-w-md mx-auto border-x border-slate-900 relative">
-      {/* Horní stavový řádek */}
       <header className="bg-slate-900 border-b border-slate-800 p-3 flex justify-between items-center text-xs sticky top-0 z-30">
         <div className="font-bold bg-gradient-to-r from-rose-500 to-amber-500 bg-clip-text text-transparent text-sm">
           PLAYBOY: HORKÉ LÉTO '26
@@ -147,7 +143,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* Hlavní obsahová část */}
       <main className="flex-1 p-4 flex flex-col items-center overflow-y-auto">
         {activeTab === 'map' && <MapView onSelectLocation={handleSelectLocation} />}
         {activeTab === 'contacts' && <ContactsView characters={characters} />}
@@ -160,7 +155,6 @@ export default function App() {
         )}
       </main>
 
-      {/* Vyskakovací okno lokace */}
       {selectedLocation && (
         <LocationModal
           location={selectedLocation}
@@ -171,7 +165,6 @@ export default function App() {
         />
       )}
 
-      {/* Spodní navigační panel */}
       <nav className="bg-slate-900/95 backdrop-blur-md border-t border-slate-800 p-2 flex justify-around items-center fixed bottom-0 left-0 right-0 max-w-md mx-auto z-30">
         <button onClick={() => setActiveTab('map')} className={`flex flex-col items-center gap-1 p-2 transition ${activeTab === 'map' ? 'text-rose-500' : 'text-slate-400 hover:text-slate-200'}`}>
           <MapPin className="w-5 h-5" />
