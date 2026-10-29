@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { INITIAL_CHARACTERS, Character } from '../data/characters';
+import { Character } from '../data/characters';
 
-export const ContactsView: React.FC = () => {
-  const [characters] = useState<Character[]>(INITIAL_CHARACTERS);
+interface ContactsViewProps {
+  characters: Character[];
+}
+
+export const ContactsView: React.FC<ContactsViewProps> = ({ characters }) => {
   const [selectedChar, setSelectedChar] = useState<Character | null>(null);
 
   return (
@@ -79,13 +82,4 @@ export const ContactsView: React.FC = () => {
 
             <button
               onClick={() => setSelectedChar(null)}
-              className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition border border-slate-700"
-            >
-              Zavřít profil
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+              className="w-full py-2.5 bg-
