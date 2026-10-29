@@ -82,4 +82,13 @@ export const ContactsView: React.FC<ContactsViewProps> = ({ characters }) => {
 
             <button
               onClick={() => setSelectedChar(null)}
-              className="w-full py-2.5 bg-
+              className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition border border-slate-700"
+            >
+              Zavřít profil
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
