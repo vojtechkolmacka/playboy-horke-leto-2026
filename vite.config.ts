@@ -3,5 +3,6 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/playboy-horke-leto-2026/',
+  // Relativní cesta zajistí, že se assety načtou správně v podadresáři GitHub Pages
+  base: './',
 });
